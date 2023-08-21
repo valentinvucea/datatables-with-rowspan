@@ -78,33 +78,49 @@ var RowsGroup = function ( dt, columnsForGrouping )
 RowsGroup.prototype = {
 	_getOrderWithGroupColumns: function (order, groupedColumnsOrderDir)
 	{
-		if (groupedColumnsOrderDir === undefined)
-			groupedColumnsOrderDir = GroupedColumnsOrderDir
-			
+		if (groupedColumnsOrderDir === undefined) {
+			groupedColumnsOrderDir = 'asc';
+		}
+		
 		var self = this;
+
 		var groupedColumnsIndexes = this.columnsForGrouping.map(function(columnSelector){
 			return self.table.column(columnSelector).index()
 		})
-		var groupedColumnsKnownOrder = order.filter(function(columnOrder){
-			return groupedColumnsIndexes.indexOf(columnOrder[0]) >= 0
-		})
-		var nongroupedColumnsOrder = order.filter(function(columnOrder){
-			return groupedColumnsIndexes.indexOf(columnOrder[0]) < 0
-		})
-		var groupedColumnsKnownOrderIndexes = groupedColumnsKnownOrder.map(function(columnOrder){
-			return columnOrder[0]
-		})
-		
-		var groupedColumnsOrder = groupedColumnsIndexes.map(function(iColumn){
-			var iInOrderIndexes = groupedColumnsKnownOrderIndexes.indexOf(iColumn)
-			if (iInOrderIndexes >= 0)
-				return [iColumn, groupedColumnsKnownOrder[iInOrderIndexes][1]]
-			else
-				return [iColumn, groupedColumnsOrderDir]
-		})
-		
-		groupedColumnsOrder.push.apply(groupedColumnsOrder, nongroupedColumnsOrder)
-		return groupedColumnsOrder;
+
+		var newColumnOrder = order[0][0];
+		var newSortOrder = order[0][1];
+
+		var existingOrder = self.order;
+
+		var newGroupedColumnsOrder   = [];
+		var newUngroupedColumnsOrder = [];
+
+		if (true === groupedColumnsIndexes.includes(newColumnOrder)) {
+			newGroupedColumnsOrder.push([newColumnOrder, newSortOrder]);
+			
+			var restOfGroupedColumnsIndexes = groupedColumnsIndexes.filter((idx) => idx !== newColumnOrder);
+			for (let i = 0; i < restOfGroupedColumnsIndexes.length; i++) {
+				let thatExisting = existingOrder.find((thatCol) => {
+					return thatCol[0] === restOfGroupedColumnsIndexes[i];
+				});
+
+				if (!thatExisting) {
+					thatExisting = [restOfGroupedColumnsIndexes[i], 'asc'];
+				}
+				newGroupedColumnsOrder.push(thatExisting);
+			}
+		} else {
+			for (let j = 0; j < self.order.length; j++) {
+				if (groupedColumnsIndexes.includes(self.order[j][0])) {
+					newGroupedColumnsOrder.push(self.order[j]);
+				}
+			}
+			newUngroupedColumnsOrder.push([newColumnOrder, newSortOrder]);
+		}
+
+		newGroupedColumnsOrder.push.apply(newGroupedColumnsOrder, newUngroupedColumnsOrder);
+		return newGroupedColumnsOrder;
 	},
  
 	// Workaround: the DT reset ordering to 'asc' from multi-ordering if user order on one column (without shift)
