@@ -187,7 +187,7 @@ $(document).ready( function () {
         'positionLink:name',
         'startDate:name'
       ],
-    //   order: [[1, "asc"], [2, "asc"]],
+      order: [[0, "asc"]],
       pageLength: '20',
       columnDefs: [
         {'targets': [1], 'orderData': [0]},
