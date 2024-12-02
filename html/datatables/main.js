@@ -143,7 +143,7 @@ $(document).ready( function () {
             '<a href="javascript:inAppLinkManager.openLink(\'/forms/f312025/print/\', \'250540/splitview\')">01/09/2023</a><br><a href="javascript:inAppLinkManager.openLink(\'/forms/f312025/print/\', \'283282/splitview\')">02/21/2023</a><br><a href="javascript:inAppLinkManager.openLink(\'/forms/f312025/print/\', \'311378/splitview\')">03/23/2023</a><br><a href="javascript:inAppLinkManager.openLink(\'/forms/f312025/print/\', \'336646/splitview\')">04/15/2023</a><br><a href="javascript:inAppLinkManager.openLink(\'/forms/f312025/print/\', \'402898/splitview\')">05/30/2023</a><br>',	  
             '<a href="javascript:inAppLinkManager.openLink(\'/training/meeting/print/\', \'11129/splitview\')">03/23/2023</a><br><a href="javascript:inAppLinkManager.openLink(\'/training/meeting/print/\', \'11129/splitview\')">03/23/2023</a><br><a href="javascript:inAppLinkManager.openLink(\'/training/meeting/print/\', \'12156/splitview\')">04/14/2023</a><br>',
             '100%',
-        ],              
+        ],
     ];  
     
     var table = $('#example').DataTable({
